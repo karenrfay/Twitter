@@ -319,6 +319,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HAJ-yI-wY7">
+                        <barButtonItem key="leftBarButtonItem" title="Sign out" id="kbR-Gv-46k">
+                            <connections>
+                                <action selector="onSignOut:" destination="bke-i1-Jj7" id="54a-KV-xT3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" id="bBS-rM-ANP">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xB7-Zy-jkJ">
                                 <rect key="frame" x="280" y="10" width="24" height="24"/>
@@ -530,6 +535,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="loginLabel" destination="cTF-fX-Bld" id="UOu-KG-Q0R"/>
                         <segue destination="uAA-hu-RJi" kind="modal" identifier="postLoginSegue" id="dBh-Kr-1sz"/>
                     </connections>
                 </viewController>

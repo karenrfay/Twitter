@@ -104,6 +104,11 @@
     }
 }
 
+- (IBAction)onSignOut:(id)sender {
+    [[TwitterClient sharedInstance] logout];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     TweetCell* cell = (TweetCell*)sender;
     if ([segue.identifier isEqualToString:@"profileSegue"] || [segue.identifier isEqualToString:@"replySegue"]) {

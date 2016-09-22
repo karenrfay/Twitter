@@ -8,11 +8,27 @@
 
 #import "LoginViewController.h"
 #import "TwitterClient.h"
+#import "User.h"
+
+@interface LoginViewController()
+@property (weak, nonatomic) IBOutlet UILabel *loginLabel;
+@end
+
 
 @implementation LoginViewController
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    User *user = [User currentUser];
+    if (user) {
+        self.loginLabel.text = @"Twitter";
+        [self performSegueWithIdentifier:@"postLoginSegue" sender:self];
+    } else {
+        self.loginLabel.text = @"Login with Twitter";
+    }
 }
 
 - (void) didReceiveMemoryWarning {

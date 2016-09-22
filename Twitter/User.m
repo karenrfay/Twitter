@@ -8,15 +8,40 @@
 
 #import "User.h"
 
+@interface User()
+
+@property (nonatomic, strong) NSDictionary *dictionary;
+
+@end
+
+
 @implementation User
 
 static User *_currentUser = nil;
 
+NSString * const kCurrentUserKey = @"kCurrentUserKey";
+
 + (void)setCurrentUser:(User *)currentUser {
     _currentUser = currentUser;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    if (currentUser != nil) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:currentUser.dictionary options:0 error:NULL];
+        [userDefaults setObject:data forKey:kCurrentUserKey];
+    } else {
+        [userDefaults setObject:nil forKey:kCurrentUserKey];
+    }
 }
 
 + (User *)currentUser {
+    if (_currentUser == nil) {
+        NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:kCurrentUserKey];
+        if (data != nil) {
+            NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+            _currentUser = [[User alloc] initWithDictionary:dictionary];
+        }
+    }
+
     return _currentUser;
 }
 
@@ -24,7 +49,7 @@ static User *_currentUser = nil;
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
-        NSLog(@"%@", dictionary);
+        self.dictionary = dictionary;
         self.name = dictionary[@"name"];
         self.screenname = dictionary[@"screen_name"];
         self.summary = dictionary[@"description"];
