@@ -25,6 +25,7 @@
     [super viewDidLoad];
     if (self.tweetsViewType == TweetsViewTypeHome || self.user == nil) {
         self.title = @"Home";
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign out" style:UIBarButtonItemStyleDone target:self action:@selector(onSignOut:)];
     } else if (self.user) {
         self.title = self.user.name;
     }
@@ -48,7 +49,7 @@
 }
 
 - (void)didTweet:(Tweet *) tweet {
-    if (self.tweetsViewType == TweetsViewTypeHome) {
+    if (self.tweetsViewType == TweetsViewTypeHome || (self.user && [self.user.screenname isEqualToString:tweet.user.screenname])) {
         NSArray* tweets = [[NSArray alloc] initWithObjects:tweet, nil];
         self.tweets = [tweets arrayByAddingObjectsFromArray:self.tweets];
         [self.tableView reloadData];
