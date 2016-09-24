@@ -73,6 +73,18 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
         NSArray * tweets = [Tweet tweetsWithArray:responseObject];
         completion(tweets, nil);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@", error);
+        completion(nil, error);
+    }];
+}
+
+- (void)mentionsTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
+    [self GET:@"1.1/statuses/mentions_timeline.json" parameters:params progress:^(NSProgress *downloadProgress) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray * tweets = [Tweet tweetsWithArray:responseObject];
+        completion(tweets, nil);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@", error);
         completion(nil, error);
     }];
 }

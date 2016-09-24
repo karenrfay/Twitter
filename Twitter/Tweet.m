@@ -34,6 +34,37 @@
     return self;
 }
 
+- (NSString *)getRelativeTimestamp {
+    NSString *relativeDate;
+    NSTimeInterval secondsSinceTweet = -[self.createdAt timeIntervalSinceNow];
+    if (secondsSinceTweet < 60) {
+        // seconds
+        relativeDate = [NSString stringWithFormat:@"%.0fs", secondsSinceTweet];
+    } else if (secondsSinceTweet < 3600) {
+        // minutes
+        relativeDate = [NSString stringWithFormat:@"%.0fm", secondsSinceTweet / 60];
+    } else if (secondsSinceTweet < 86400) {
+        relativeDate = [NSString stringWithFormat:@"%.0fh", secondsSinceTweet / 3600];
+    } else {
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"M/d/yy"];
+        relativeDate = [dateFormat stringFromDate:self.createdAt];
+    }
+    return relativeDate;
+}
+
++ (NSString *)getFormattedCount:(NSInteger)count {
+    NSString *str;
+    if (count >= 1000000) {
+        str = [NSString stringWithFormat:@"%0.2fM", count / 1000000.0];
+    } else if (count >= 1000) {
+        str = [NSString stringWithFormat:@"%ldK", lroundf(count / 1000.0)];
+    } else {
+        str = [NSString stringWithFormat:@"%ld", count];
+    }
+    return str;
+}
+
 + (NSArray *)tweetsWithArray:(NSArray *)array {
     NSMutableArray *tweets = [NSMutableArray array];
     for (NSDictionary *dictionary in array) {

@@ -16,5 +16,6 @@
 - (void) closeMenu;
 
 - (void) setContentViewController:(UIViewController *) contentViewController;
+- (void) setMenuViewController:(UIViewController *) menuViewController;
 
 @end

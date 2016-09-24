@@ -26,9 +26,11 @@
 
 @property (nonatomic, strong) NSDate *createdAt;
 
+- (NSString *)getRelativeTimestamp;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
 + (NSArray *)tweetsWithArray:(NSArray *)array;
++ (NSString *)getFormattedCount:(NSInteger) count;
 
 @end

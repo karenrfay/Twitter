@@ -23,9 +23,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (self.tweetsViewType == TweetsViewTypeHome || self.user == nil) {
+    if (self.tweetsViewType == TweetsViewTypeHome) {
         self.title = @"Home";
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign out" style:UIBarButtonItemStyleDone target:self action:@selector(onSignOut:)];
+    } else if (self.tweetsViewType == TweetsViewTypeMentions) {
+        self.title = @"Mentions";
     } else if (self.user) {
         self.title = self.user.name;
     }
@@ -41,6 +42,11 @@
     [self.tableView insertSubview:self.refreshControl atIndex:0];
 
     [self loadTweets:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    // TODO: this is too big of a hammer
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,6 +72,10 @@
 - (void)loadTweets:(UIRefreshControl *)refreshControl {
     if (self.tweetsViewType == TweetsViewTypeHome) {
         [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
+            [self didLoadTweets:tweets error:error];
+        }];
+    } else if (self.tweetsViewType == TweetsViewTypeMentions) {
+        [[TwitterClient sharedInstance] mentionsTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
             [self didLoadTweets:tweets error:error];
         }];
     } else if (self.tweetsViewType == TweetsViewTypeUser) {
@@ -103,11 +113,6 @@
         [cell setTweet:tweet];
         return cell;
     }
-}
-
-- (IBAction)onSignOut:(id)sender {
-    [[TwitterClient sharedInstance] logout];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

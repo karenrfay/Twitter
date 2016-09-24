@@ -8,6 +8,7 @@
 
 #import "ProfileCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "Tweet.h"
 
 @interface ProfileCell()
 @property (weak, nonatomic) IBOutlet UIImageView *profileBannerImage;
@@ -29,25 +30,13 @@
     self.descLabel.text = user.summary;
     self.userNameLabel.text = user.name;
     self.screenNameLabel.text = [NSString stringWithFormat:@"@%@", user.screenname];
-    self.followersCount.text = [self formatCount:(long)user.followersCount];
-    self.followingCount.text = [self formatCount:(long)user.followingCount];
+    self.followersCount.text = [Tweet getFormattedCount:user.followersCount];
+    self.followingCount.text = [Tweet getFormattedCount:user.followingCount];
     [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl]];
     self.profileImage.layer.cornerRadius = 5.0;
     self.profileImage.layer.masksToBounds = YES;
     [self.profileBannerImage setImageWithURL:[NSURL URLWithString:user.profileBannerUrl]];
     self.profileBannerImage.backgroundColor = user.profileLinkColor;
-}
-
-- (NSString *)formatCount:(long)count {
-    NSString *str;
-    if (count >= 1000000) {
-        str = [NSString stringWithFormat:@"%0.2fM", count / 1000000.0];
-    } else if (count >= 1000) {
-        str = [NSString stringWithFormat:@"%ldK", lroundf(count / 1000.0)];
-    } else {
-        str = [NSString stringWithFormat:@"%ld", count];
-    }
-    return str;
 }
 
 @end

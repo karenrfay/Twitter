@@ -31,32 +31,18 @@
     [self.profileImage setImageWithURL:[NSURL URLWithString:tweet.user.profileImageUrl]];
     self.profileImage.layer.cornerRadius = 5.0;
     self.profileImage.layer.masksToBounds = YES;
-
-    NSTimeInterval secondsSinceTweet = -[tweet.createdAt timeIntervalSinceNow];
-    if (secondsSinceTweet < 60) {
-        // seconds
-        self.dateLabel.text = [NSString stringWithFormat:@"%.0fs", secondsSinceTweet];
-    } else if (secondsSinceTweet < 3600) {
-        // minutes
-        self.dateLabel.text = [NSString stringWithFormat:@"%.0fm", secondsSinceTweet / 60];
-    } else if (secondsSinceTweet < 86400) {
-        self.dateLabel.text = [NSString stringWithFormat:@"%.0fh", secondsSinceTweet / 3600];
-    } else {
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"M/d/yy"];
-        self.dateLabel.text = [dateFormat stringFromDate:tweet.createdAt];
-    }
+    self.dateLabel.text = [tweet getRelativeTimestamp];
 
     if (tweet.favorited) {
-        self.favoriteButton.imageView.image = [UIImage imageNamed:@"favorited"];
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favorited"] forState:UIControlStateNormal];
     } else {
-        self.favoriteButton.imageView.image = [UIImage imageNamed:@"favorite"];
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favorite"] forState:UIControlStateNormal];
     }
     
     if (tweet.retweeted) {
-        self.retweetButton.imageView.image = [UIImage imageNamed:@"retweeted"];
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweeted"] forState:UIControlStateNormal];
     } else {
-        self.retweetButton.imageView.image = [UIImage imageNamed:@"retweet"];
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet"] forState:UIControlStateNormal];
     }
 }
 

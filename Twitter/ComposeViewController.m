@@ -65,7 +65,7 @@ const int kMaxTweetLength = 140;
 }
 
 - (IBAction)onTweetButton:(id)sender {
-    int tweetLength = self.tweetField.text.length;
+    int tweetLength = (int)self.tweetField.text.length;
     int remaining = kMaxTweetLength - tweetLength;
 
     if (tweetLength > 0 && remaining >= 0) {
@@ -84,7 +84,7 @@ const int kMaxTweetLength = 140;
 }
 
 - (void)updateCharCount {
-    int remaining = kMaxTweetLength - self.tweetField.text.length;
+    int remaining = kMaxTweetLength - (int)self.tweetField.text.length;
 
     self.charCountLabel.text = [NSString stringWithFormat:@"%d", remaining];
 
